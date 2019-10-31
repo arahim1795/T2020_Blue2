@@ -10,6 +10,7 @@ from flask import (
     request,
 )
 from functools import wraps
+import webapi
 
 app = Flask(__name__)
 
@@ -44,10 +45,20 @@ def is_logged_in(f):
 
     return wrap
 
+
 # Dashboard
 @app.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html")
+    username = "marytan"
+    customerId = webapi.api_getUserID(username)
+    transactions = webapi.api_getTransactionDetails(customerId)
+    expenses = {"Transport": 10, "F&B": 30, "Transfer": 40, "ATM": 20}
+    transport = 40
+    fnb = 30
+    transfer = 20
+    atm = 10
+    return render_template("dashboard.html", transport=transport, fnb=fnb, transfer=transfer, atm=atm)
+
 
 # About
 @app.route("/about")
@@ -55,6 +66,11 @@ def dashboard():
 def about():
     return render_template("about.html")
 
+@app.route('/api/ai_get_name/')
+def api_get_name(name="Hello"):
+    return json.jsonify({
+        'name': name
+    })
 
 @app.route("/logout")
 @is_logged_in
