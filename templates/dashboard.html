@@ -40,7 +40,7 @@
     </div> 
   </nav>
 
-  <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+<div class="w3-main" style="margin-left:300px;margin-top:43px;"></div>
   
   <div class="w3-row-padding w3-margin-bottom">
         <div class="w3-quarter">
@@ -89,7 +89,6 @@
 
       <script>
             window.onload = function () {
-            
             var chart = new CanvasJS.Chart("chartContainer", {
                 exportEnabled: true,
                 animationEnabled: true,
@@ -106,10 +105,10 @@
                     toolTipContent: "{name}: <strong>{y}%</strong>",
                     indexLabel: "{name} - {y}%",
                     dataPoints: [
-                        { y: 26, name: "Transport", exploded: true },
-                        { y: 20, name: "F&B" },
-                        { y: 5, name: "Transfers" },
-                        { y: 3, name: "ATM" }
+                        { y: {{transport}}, name: "Transport", exploded: true },
+                        { y: {{fnb}}, name: "F&B" },
+                        { y: {{transfer}}, name: "Transfer" },
+                        { y: {{atm}}, name: "ATM" }
                     ]
                 }]
             });
@@ -128,9 +127,9 @@
             </script>
             </head>
             <body>
-        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-      
-      
+            <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+            </body>
 
 {% endblock %}
