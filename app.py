@@ -1,11 +1,4 @@
-from flask import (
-    Flask,
-    render_template,
-    redirect,
-    url_for,
-    session,
-    request,
-)
+from flask import Flask, render_template, redirect, url_for, session, request
 
 import webapi
 
@@ -27,7 +20,6 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        
 
         for user in users:
             if username == user:
@@ -42,13 +34,11 @@ def login():
             active_id = webapi.api_getUserID(username)
             session["custid"] = active_id
 
-            if username == 'marytan':
-                session['custid'] = 2
-                session['accountId'] = 74
+            if username == "marytan":
+                session["accountId"] = 74
 
             else:
-                session['custid'] = 1
-                session['accountId'] = 32
+                session["accountId"] = 32
 
             return redirect(url_for("dashboard"))
         else:
@@ -72,25 +62,23 @@ def is_logged_in(f):
 # Dashboard
 @app.route("/dashboard")
 def dashboard():
-username = "marytan"
-    customerId = webapi.api_getUserID(username)
-    transactions = webapi.api_getTransactionDetails(customerId)
-    expenses = {"Transport": 10, "F&B": 30, "Transfer": 40, "ATM": 20}
-    transport = 40
-    fnb = 30
-    transfer = 20
-    atm = 10
-    return render_template("dashboard.html", transport=transport, fnb=fnb, transfer=transfer, atm=atm)
-
-    number_of_acc = webapi.api_getListOfCreditAccounts(session['custid'])
+    customerId = webapi.api_getUserID(session["username"])
     exp = expenditure()
-    return render_template("dashboard.html", exp = exp)
+    return render_template(
+        "dashboard.html",
+        exp=exp,
+        transport=exp["TRANSPORT"],
+        fnb=exp["F&B"],
+        transfer=exp["TRANSFER"],
+        atm=exp["ATM"],
+    )
+
 
 # Dashboard
 @app.route("/BankBalance")
 def BankBalance():
-    bank_balance = webapi.api_getAccountBalance(session['accountId'])
-    return render_template("BankBalance.html", bank_balance = bank_balance)
+    bank_balance = webapi.api_getAccountBalance(session["accountId"])
+    return render_template("BankBalance.html", bank_balance=bank_balance)
 
 
 # About
@@ -105,11 +93,11 @@ def settings():
         credit=webapi.api_getListOfCreditAccounts(session["custid"]),
     )
 
-@app.route('/api/ai_get_name/')
+
+@app.route("/api/ai_get_name/")
 def api_get_name(name="Hello"):
-    return json.jsonify({
-        'name': name
-    })
+    return json.jsonify({"name": name})
+
 
 @app.route("/logout")
 @is_logged_in
@@ -118,18 +106,18 @@ def logout():
     return redirect(url_for("login"))
 
 
-
 def expenditure():
     transaction_details = webapi.api_getTransactionDetails()
     exp = {}
 
     for i in transaction_details:
-        if i['tag'] not in exp:
-            exp[i['tag']] = 1
+        if i["tag"] not in exp:
+            exp[i["tag"]] = 1
         else:
-            exp[i['tag']] += 1
+            exp[i["tag"]] += 1
 
     return exp
+
 
 if __name__ == "__main__":
     app.secret_key = "secret123"

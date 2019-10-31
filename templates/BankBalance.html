@@ -17,7 +17,7 @@
     <div class="w3-container w3-row">
 
       <div class="w3-col s8 w3-bar">
-        <span>Welcome, <strong>{{session.username}}</strong></span><br>
+        <span>Welcome, <strong>{{ session.username }}</strong></span><br>
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
       </div>
@@ -40,7 +40,7 @@
     </div> 
   </nav>
 
-<div class="w3-main" style="margin-left:300px;margin-top:43px;"></div>
+  <div class="w3-main" style="margin-left:300px;margin-top:43px;">
   
   <div class="w3-row-padding w3-margin-bottom">
         <div class="w3-quarter">
@@ -53,17 +53,17 @@
           </div>
         </div>
 
-        <div class="w3-quarter" onclick="location.href='BankBalance'">
-            <div class="w3-container w3-blue w3-padding-16">
-              <!-- <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div> -->
-              <!-- <div class="w3-right">
-                <h3>99</h3>
-              </div> -->
-              <div class="w3-clear"></div>
-              <h4>Bank Balance</h4>
-              <br>
-            </div>
+        <div class="w3-quarter">
+          <div class="w3-container w3-blue w3-padding-16">
+            <!-- <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div> -->
+            <!-- <div class="w3-right">
+              <h3>99</h3>
+            </div> -->
+            <div class="w3-clear"></div>
+            <h4>Bank Balance</h4>
+            <br>
           </div>
+        </div>
 
         <div class="w3-quarter">
           <div class="w3-container w3-teal w3-padding-16">
@@ -83,84 +83,37 @@
           </div>
         </div>
       </div>
-
-      <div id="piechart", class = center></div>
-
-
-      <script>
-            window.onload = function () {
-            var chart = new CanvasJS.Chart("chartContainer", {
-                exportEnabled: true,
-                animationEnabled: true,
-                title:{
-                    text: "Expenditure"
-                },
-                legend:{
-                    cursor: "pointer",
-                    itemclick: explodePie
-                },
-                data: [{
-                    type: "pie",
-                    showInLegend: true,
-                    toolTipContent: "{name}: <strong>{y}%</strong>",
-                    indexLabel: "{name} - {y}%",
-                    dataPoints: [
-                        { y: {{transport}}, name: "Transport", exploded: true },
-                        { y: {{fnb}}, name: "F&B" },
-                        { y: {{transfer}}, name: "Transfer" },
-                        { y: {{atm}}, name: "ATM" }
-                    ]
-                }]
-            });
-            chart.render();
-            }
-            
-            function explodePie (e) {
-                if(typeof (e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e.dataPointIndex].exploded) {
-                    e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;
-                } else {
-                    e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
-                }
-                e.chart.render();
-            
-            }
-            </script>
-            </head>
-            <body>
-            <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
-            </body>
-
-            <table>
-                {% for items,balance in exp.items() %}
-                  <th>{{items}}</th>
-                  
-                {% endfor %}
-                <tr>
-                  {% for items,balance in exp.items() %}
-                  <td>{{balance}}</td>
-                 {% endfor %}
-                </tr>
-                
-              </table>
+      <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+        </style>
+      <table>
+        {% for items,balance in bank_balance.items() %}
+          <th>{{items}}</th>
+          
+        {% endfor %}
+        <tr>
+          {% for items,balance in bank_balance.items() %}
+          <td>{{balance}}</td>
+         {% endfor %}
+        </tr>
+        
+      </table>
       
-              <style>
-                table {
-                  font-family: arial, sans-serif;
-                  border-collapse: collapse;
-                  width: 100%;
-                }
-                
-                td, th {
-                  border: 1px solid #dddddd;
-                  text-align: left;
-                  padding: 8px;
-                }
-                
-                tr:nth-child(even) {
-                  background-color: #dddddd;
-                }
-                </style>
+
+        
 
 {% endblock %}
