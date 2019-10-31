@@ -13,6 +13,7 @@ from functools import wraps
 
 app = Flask(__name__)
 
+
 # Index, Login
 @app.route("/", methods=["GET", "POST"])
 @app.route("/login", methods=["GET", "POST"])
