@@ -1,0 +1,32 @@
+{% extends 'layout.html' %} {% block body %}
+<h1>Profile</h1>
+<h2><strong>Particulars</strong></h2>
+<ul class="list-group">
+  <li class="list-group-item">Last Name: {{ data["lastName"] }}</li>
+  <li class="list-group-item">First Name: {{ data["firstName"] }}</li>
+  <li class="list-group-item">Date-of-Birth: {{ data["dateOfBirth"] }}</li>
+  <li class="list-group-item">Gender: {{ data["gender"] }}</li>
+</ul>
+<br />
+<h2><strong>Accounts</strong></h2>
+{% if account|length > 0 %} {% for acct in account %}
+<h4>{{ acct["displayName"] }}</h4>
+<ul class="list-group">
+  <li class="list-group-item">Account ID: {{ acct["accountId"] }}</li>
+  <li class="list-group-item">Tyoe: {{ acct["type"] }}</li>
+  <li class="list-group-item">Card Number: {{ acct["accountNumber"] }}</li>
+</ul>
+{% endfor %} {% else %}
+<h4>You Have No Accounts</h4>
+{% endif %}
+<br />
+<h2><strong>Credit Accounts</strong></h2>
+{% if credit|length > 0 %} {% for acct in credit %}
+<h4>{{ acct["displayName"] }}</h4>
+<ul class="list-group">
+  <li class="list-group-item">Account ID: {{ acct["accountId"] }}</li>
+  <li class="list-group-item">Card Number: {{ acct["cardNumber"] }}</li>
+</ul>
+{% endfor %} {% else %}
+<h4>You Have No Credit Account</h4>
+{% endif %} {% endblock %}
