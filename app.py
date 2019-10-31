@@ -24,7 +24,7 @@ def login():
         if username != "" and password != "":
             session["logged_in"] = True
             session["username"] = username
-            return redirect(url_for("about"))
+            return redirect(url_for("dashboard"))
         else:
             error = "Invalid Login"
             return render_template("login.html", error=error)
@@ -42,6 +42,11 @@ def is_logged_in(f):
             return redirect(url_for("login"))
 
     return wrap
+
+# Dashboard
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
 
 # About
 @app.route("/about")
