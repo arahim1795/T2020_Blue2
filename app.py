@@ -13,6 +13,7 @@ from functools import wraps
 
 app = Flask(__name__)
 
+
 # Index, Login
 @app.route("/", methods=["GET", "POST"])
 @app.route("/login", methods=["GET", "POST"])
@@ -42,6 +43,7 @@ def is_logged_in(f):
             return redirect(url_for("login"))
 
     return wrap
+
 
 # About
 @app.route("/about")
