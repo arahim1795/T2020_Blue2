@@ -1,30 +1,43 @@
 from flask import (
     Flask,
     render_template,
-    flash,
     redirect,
     url_for,
     session,
     request,
-    logging,
-    request,
 )
 from functools import wraps
+import webapi
+
 
 app = Flask(__name__)
 
+# simulate simple database
+users = ["marytan", "limzeyang"]
+passwords = ["1234", "5678"]
 
 # Index, Login
 @app.route("/", methods=["GET", "POST"])
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    userflag = False
+    passflag = False
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
 
-        if username != "" and password != "":
+        for user in users:
+            if username == user:
+                userflag = True
+        for passes in passwords:
+            if password == passes:
+                passflag = True
+        if userflag and passflag:
             session["logged_in"] = True
             session["username"] = username
+            active_id = webapi.api_getUserID(username)
+            session["custid"] = active_id
+
             return redirect(url_for("dashboard"))
         else:
             error = "Invalid Login"
@@ -39,7 +52,6 @@ def is_logged_in(f):
         if "logged_in" in session:
             return f(*args, **kwargs)
         else:
-            flash("Unauthorized, Please login", "danger")
             return redirect(url_for("login"))
 
     return wrap
@@ -49,11 +61,18 @@ def is_logged_in(f):
 def dashboard():
     return render_template("dashboard.html")
 
+
 # About
-@app.route("/about")
+@app.route("/profile")
 @is_logged_in
-def about():
-    return render_template("about.html")
+def settings():
+    print(session["custid"])
+    return render_template(
+        "profile.html",
+        data=webapi.api_getCustomerDetails(session["custid"]),
+        account=webapi.api_getListOfDepositAccounts(session["custid"]),
+        credit=webapi.api_getListOfCreditAccounts(session["custid"]),
+    )
 
 
 @app.route("/logout")

@@ -4,7 +4,7 @@ import requests
 api_headers = {'identity': 'Group2', 'token': '2c55f846-e723-4564-b93c-35630007dd7a'}
 
 
-def api_getUserID(username='marytan'):
+def api_getUserID(username):
     api_url = 'http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/customers/' + username
     response = requests.get(api_url, headers=api_headers)
 
@@ -15,7 +15,7 @@ def api_getUserID(username='marytan'):
         return None
 
 
-def api_getCustomerDetails(customerId=2):
+def api_getCustomerDetails(customerId):
     api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/customers/{customerId}/details"
     response = requests.get(api_url, headers=api_headers)
     # {
