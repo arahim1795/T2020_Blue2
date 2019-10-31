@@ -6,6 +6,9 @@ from flask import (
     session,
     request,
 )
+
+import webapi
+
 from functools import wraps
 import webapi
 
@@ -25,6 +28,7 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        
 
         for user in users:
             if username == user:
@@ -35,8 +39,17 @@ def login():
         if userflag and passflag:
             session["logged_in"] = True
             session["username"] = username
+
             active_id = webapi.api_getUserID(username)
             session["custid"] = active_id
+
+            if username == 'marytan':
+                session['custid'] = 2
+                session['accountId'] = 74
+
+            else:
+                session['custid'] = 1
+                session['accountId'] = 32
 
             return redirect(url_for("dashboard"))
         else:
@@ -59,7 +72,16 @@ def is_logged_in(f):
 # Dashboard
 @app.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html")
+    number_of_acc = webapi.api_getListOfCreditAccounts(session['custid'])
+    exp = expenditure()
+    return render_template("dashboard.html", exp = exp)
+
+
+# Dashboard
+@app.route("/BankBalance")
+def BankBalance():
+    bank_balance = webapi.api_getAccountBalance(session['accountId'])
+    return render_template("BankBalance.html", bank_balance = bank_balance)
 
 
 # About
@@ -81,6 +103,19 @@ def logout():
     session.clear()
     return redirect(url_for("login"))
 
+
+
+def expenditure():
+    transaction_details = webapi.api_getTransactionDetails()
+    exp = {}
+
+    for i in transaction_details:
+        if i['tag'] not in exp:
+            exp[i['tag']] = 1
+        else:
+            exp[i['tag']] += 1
+
+    return exp
 
 if __name__ == "__main__":
     app.secret_key = "secret123"

@@ -70,7 +70,7 @@ def api_getTransactionDetails(accountId=74):
     else:
         return None
 
-def  api_getAccountBalance(accountId=74):
+def  api_getAccountBalance(accountId):
     api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/accounts/deposit/{accountId}/balance?"
     response = requests.get(api_url, headers=api_headers)
     # {
@@ -87,7 +87,7 @@ def  api_getAccountBalance(accountId=74):
     else:
         return None
 
-def  api_getListOfCreditAccounts(customerId=2):
+def  api_getListOfCreditAccounts(customerId):
     api_url = f"http://techtrek-api-gateway.ap-southeast-1.elasticbeanstalk.com/accounts/credit/{customerId}"
     response = requests.get(api_url, headers=api_headers)
     # [
